@@ -1,8 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-x = list(map(float, input("Enter X values (comma-separated): ").split(",")))
-y = list(map(float, input("Enter Y values (comma-separated): ").split(",")))
+x = np.array(input("Enter X values (comma-separated): ").split(","), dtype=float)
+y = np.array(input("Enter Y values (comma-separated): ").split(","), dtype=float)
 
 n = len(x)
 sumX = 0
@@ -49,7 +49,6 @@ r2 = 1 - (ss_res / ss_tot)
 
 plt.scatter(x, y, label="Data Points")
 plt.plot(x, y_pred, color="red", label="Regression Line")
-
 plt.title("Linear Regression")
 plt.xlabel("X")
 plt.ylabel("Y")
@@ -59,7 +58,6 @@ plt.show()
 
 metrics = ["MSE", "MAE", "RMSE", "R2"]
 values = [mse, mae, rmse, r2]
-plt.figure(figsize=(6,4))
 plt.scatter(metrics, values)
 for i in range(4):
     plt.text(metrics[i], values[i], round(values[i], 4))
@@ -68,3 +66,10 @@ plt.xlabel("Metrics")
 plt.ylabel("Value")
 plt.grid(True)
 plt.show()
+
+
+print(f"Linear Regression Equation: y = {m:.4f}x + {b:.4f}")
+print(f"Mean Squared Error (MSE)       : {mse:.4f}")
+print(f"Mean Absolute Error (MAE)      : {mae:.4f}")
+print(f"Root Mean Squared Error (RMSE) : {rmse:.4f}")
+print(f"R² Score                       : {r2:.4f}")
