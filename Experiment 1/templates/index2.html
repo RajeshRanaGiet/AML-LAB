@@ -57,8 +57,7 @@
 
         let graphX = [];
         let graphY = [];
-        let m = 0;
-        let b = 0;
+        let m = 0, b = 0, mse = 0, mae = 0, rmse = 0, rSquared = 0;
 
 
 
@@ -122,10 +121,10 @@
                 maeSum += Math.abs(y[i] - predY);
             }
             
-            const mae = maeSum / n;
-            const mse = sse / n;
-            const rmse = Math.sqrt(mse);
-            const rSquared = sst !== 0 ? 1 - (sse / sst) : 1;
+            mae = maeSum / n;
+            mse = sse / n;
+            rmse = Math.sqrt(mse);
+            rSquared = sst !== 0 ? 1 - (sse / sst) : 1;
 
             resultDiv.innerHTML = `
                 <hr>
@@ -153,7 +152,11 @@
                     x: graphX,
                     y: graphY,
                     m : m,
-                    b : b
+                    b : b,
+                    mse : mse,
+                    mae : mae,
+                    rmse : rmse,
+                    r2 : rSquared
                 })
             });
 
