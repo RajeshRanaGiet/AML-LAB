@@ -26,7 +26,7 @@ def calculate():
 
     x_data = {}
     x_names = []
-    x_values_raw = [] # Keep track of strings to pass to the next form
+    x_values_raw = []
     
     idx = 0
     while f'x_name_{idx}' in request.form:
@@ -55,21 +55,17 @@ def calculate():
     model.fit(data, y_vals)
     predictions = model.predict(data)
 
-    # Evaluation Metrics
     mse = mean_squared_error(y_vals, predictions)
     mae = mean_absolute_error(y_vals, predictions)
     rmse = np.sqrt(mse)
     r2 = r2_score(y_vals, predictions)
 
-    # Build Equation String
     intercept = model.intercept_
     coefficients = model.coef_
     equation_terms = [f"({coef:.4f} * x{i+1})" for i, coef in enumerate(coefficients)]
     equation_str = f"y = {intercept:.4f} + " + " + ".join(equation_terms)
     slopes = {x_names[i]: f"{coef:.4f}" for i, coef in enumerate(coefficients)}
 
-    # --- Plot 1: Prediction Accuracy ---
-    plt.figure(figsize=(5, 4))
     plt.scatter(y_vals, predictions, color="#10b981", edgecolor="#065f46", linewidth=1, s=50, alpha=0.85)
     min_val = min(float(np.min(y_vals)), float(np.min(predictions)))
     max_val = max(float(np.max(y_vals)), float(np.max(predictions)))
@@ -78,7 +74,6 @@ def calculate():
     plt.ylabel(f"Predicted {y_name}")
     plt.title("Model Prediction Accuracy Evaluation")
     plt.grid(True)
-    plt.tight_layout()
     
     buf1 = io.BytesIO()
     plt.savefig(buf1, format="png")
@@ -86,8 +81,6 @@ def calculate():
     plot1_base64 = base64.b64encode(buf1.read()).decode("utf-8")
     plt.close()
 
-    # --- Plot 2: Performance Metrics Chart ---
-    plt.figure(figsize=(6, 4))
     metrics_names = ["R2 Score", "RMSE", "MAE", "MSE"]
     metrics_vals = [r2, rmse, mae, mse]
     colors = ["#4f46e5", "#3b82f6", "#60a5fa", "#93c5fd"]
@@ -95,10 +88,10 @@ def calculate():
     for bar in bars:
         width = bar.get_width()
         plt.annotate(f" {width:.4f}", xy=(width, bar.get_y() + bar.get_height() / 2), ha='left', va='center', fontweight='bold')    
-    plt.xlabel("Metric Value")
+    plt.xlabel("Computed Values")
+    plt.ylabel("Metric Value")
     plt.title("Linear Regression Performance Metrics")
     plt.grid(True)
-    plt.tight_layout()
 
     buf2 = io.BytesIO()
     plt.savefig(buf2, format="png")
@@ -106,7 +99,6 @@ def calculate():
     plot2_base64 = base64.b64encode(buf2.read()).decode("utf-8")
     plt.close()
 
-    # Package strings back to frontend for local prediction recovery
     x_raw_str = ";".join(x_values_raw)
 
     return render_template('result.html', 
@@ -126,7 +118,6 @@ def predict():
     x_raw_str = request.form['x_raw_str']
     y_name = request.form['y_name']
 
-    # Rebuild data matrices locally on demand
     y_vals = np.array([float(val) for val in y_input.split(",") if val.strip()])
     feature_strings = x_raw_str.split(";")
     
@@ -134,7 +125,6 @@ def predict():
     for i, f_str in enumerate(feature_strings):
         x_data[f'x{i+1}'] = [float(val) for val in f_str.split(",") if val.strip()]
         
-    # Re-fit simple model structure
     model = LinearRegression()
     model.fit(pd.DataFrame(x_data), y_vals)
 
