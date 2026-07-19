@@ -84,17 +84,15 @@ else:
     first_x_name = x_names[0]
 
     
-    plt.scatter(y_vals, predictions, color="#10b981", edgecolor="#065f46", linewidth=1, s=50, label="Predictions", alpha=0.85)
+    plt.scatter(y_vals, predictions, color="#10b981", edgecolor="#065f46", linewidth=1, s=50, alpha=0.85)
     min_val = min(float(np.min(y_vals)), float(np.min(predictions)))
     max_val = max(float(np.max(y_vals)), float(np.max(predictions)))
-    plt.plot([min_val, max_val], [min_val, max_val], color="#64748b", linestyle="-.", linewidth=1.5, label="Perfect Target Line")
-    plt.xlabel(f"Actual {y_name}", fontsize=10, fontweight='semibold')
-    plt.ylabel(f"Predicted {y_name}", fontsize=10, fontweight='semibold')
-    plt.title("Model Prediction Accuracy Evaluation", fontsize=11, fontweight='bold')
-    plt.legend()
-    plt.grid(True) 
+    plt.plot([min_val, max_val], [min_val, max_val], color="#64748b", linestyle="-.", linewidth=1.5)
+    plt.xlabel(f"Actual {y_name}")
+    plt.ylabel(f"Predicted {y_name}")
+    plt.title("Model Prediction Accuracy Evaluation")
+    plt.grid(True)
     plt.show()
-
 
     metrics_names = ["R2 Score", "RMSE", "MAE", "MSE"]
     metrics_vals = [r2, rmse, mae, mse]
@@ -102,49 +100,9 @@ else:
     bars = plt.barh(metrics_names, metrics_vals, color=colors)
     for bar in bars:
         width = bar.get_width()
-        plt.annotate(f" {width:.4f}",
-                     xy=(width, bar.get_y() + bar.get_height() / 2),
-                     xytext=(4, 0),
-                     textcoords="offset points",
-                     ha='left', va='center', fontweight='bold', fontsize=9, color="#1e293b")    
-    plt.xlabel("Evaluation Score Metric Value", fontsize=10, fontweight='semibold')
-    plt.title("Linear Regression Performance Metrics", fontsize=11, fontweight='bold', pad=12)
+        plt.annotate(f" {width:.4f}", xy=(width, bar.get_y() + bar.get_height() / 2), ha='left', va='center', fontweight='bold')  
+    plt.xlabel("Computed Values")  
+    plt.ylabel("Metric Value")
+    plt.title("Linear Regression Performance Metrics")
     plt.grid(True)
     plt.show()
-
-
-
-
-'''
-Enter the name of the target variable y : Final Marks
-Enter comma-separated numerical values for Final Marks (y): 45,60,75,90
-
-How many feature variables (x) do you want to enter? 3
-
-Please enter comma-separated numerical values for each feature:
-Enter the name of feature x1 : Study Hours
-Enter values for Study Hours (x1): 2,4,6,8
-Enter the name of feature x2 : Attendance
-Enter values for Attendance (x2): 70,80,85,90
-Enter the name of feature x3 : Assignment
-Enter values for Assignment (x3): 12,15,18,20
-
-==============================
-Final Regression Equation:
-y = 30.0000 + (7.5000 * x1) + (-0.0000 * x2) + (0.0000 * x3)
-==============================
-Intercept (b0): 30.0000
-Slope for Study Hours (b1): 7.5000
-Slope for Attendance (b2): -0.0000
-Slope for Assignment (b3): 0.0000
-
-Do you want to enter sample data for predicting Final Marks? (yes/no): y
-
---- Enter Values for Prediction ---
-Enter value for Study Hours (x1): 6
-Enter value for Attendance (x2): 85
-Enter value for Assignment (x3): 18
->> Predicted Final Marks (y): 75.0000
-
-Exiting prediction menu. Displaying graphs...
-'''
