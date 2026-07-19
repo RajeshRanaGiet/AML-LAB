@@ -49,13 +49,15 @@ else:
     equation_terms = [f"({coef:.4f} * x{idx+1})" for idx, coef in enumerate(coefficients)]
     equation_str = f"y = {intercept:.4f} + " + " + ".join(equation_terms)
 
-    print("\n==============================")
     print("Final Regression Equation:")
     print(equation_str)
-    print("==============================")
     print(f"Intercept (b0): {intercept:.4f}")
     for idx, coef in enumerate(coefficients):
         print(f"Slope for {x_names[idx]} (b{idx+1}): {coef:.4f}")
+    print(f"Mean Squared Error (MSE)       : {mse:.4f}")
+    print(f"Mean Absolute Error (MAE)      : {mae:.4f}")
+    print(f"Root Mean Squared Error (RMSE) : {rmse:.4f}")
+    print(f"R² Score                       : {r2:.4f}")
     print()
 
     choice = input(f"Do you want to enter sample data for predicting {y_name}? (yes/no): ").strip().lower()
