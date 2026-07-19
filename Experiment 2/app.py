@@ -49,7 +49,6 @@ def calculate():
             return f"Error: Invalid numerical values inside feature '{feat_name}'.", 400
         idx += 1
 
-    # Model Calculation
     data = pd.DataFrame(x_data)
     model = LinearRegression()
     model.fit(data, y_vals)
